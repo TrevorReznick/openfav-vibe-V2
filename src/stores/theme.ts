@@ -67,3 +67,12 @@ if (typeof window !== "undefined") {
 export const setTheme = (theme: Theme) => {
   themeStore.set(theme)
 }
+
+export const initializeTheme = (defaultTheme = "system", storageKey = "theme") => {
+  if (typeof window === "undefined") return
+
+  const stored = localStorage.getItem(storageKey) as Theme
+  const initialTheme = stored && ["light", "dark", "system"].includes(stored) ? stored : (defaultTheme as Theme)
+
+  themeStore.set(initialTheme)
+}

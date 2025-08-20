@@ -1,7 +1,9 @@
 "use client"
 
-import { ThemeProvider as NextThemeProvider } from "next-themes"
 import type { ReactNode } from "react"
+import { useEffect } from "react"
+import { useStore } from "@nanostores/react"
+import { themeStore, initializeTheme } from "../../stores/theme"
 
 interface ThemeProviderProps {
   children: ReactNode
@@ -9,23 +11,23 @@ interface ThemeProviderProps {
   storageKey?: string
 }
 
-export function ThemeProvider({
-  children,
-  defaultTheme = "system",
-  storageKey = "openfav-theme",
-  ...props
-}: ThemeProviderProps) {
-  return (
-    <NextThemeProvider
-      attribute="class"
-      defaultTheme={defaultTheme}
-      enableSystem
-      disableTransitionOnChange={false}
-      storageKey={storageKey}
-      themes={["light", "dark", "system"]}
-      {...props}
-    >
-      {children}
-    </NextThemeProvider>
-  )
+export function ThemeProvider({ children, defaultTheme = "system", storageKey = "openfav-theme" }: ThemeProviderProps) {
+  const theme = useStore(themeStore)
+
+  useEffect(() => {
+    initializeTheme(defaultTheme, storageKey)
+  }, [defaultTheme, storageKey])
+
+  useEffect(() => {
+    const root = document.documentElement
+
+    if (theme === "system") {
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      root.classList.toggle("dark", systemTheme === "dark")
+    } else {
+      root.classList.toggle("dark", theme === "dark")
+    }
+  }, [theme])
+
+  return <>{children}</>
 }

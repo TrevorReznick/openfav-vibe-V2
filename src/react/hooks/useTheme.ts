@@ -1,10 +1,11 @@
 "use client"
 
-import { useTheme as useNextTheme } from "next-themes"
+import { useStore } from "@nanostores/react"
+import { themeStore, setTheme as setThemeStore } from "../../stores/theme"
 import { useEffect, useState } from "react"
 
 export function useTheme() {
-  const { theme, setTheme, resolvedTheme, themes } = useNextTheme()
+  const theme = useStore(themeStore)
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -12,29 +13,36 @@ export function useTheme() {
   }, [])
 
   // Enhanced theme utilities
+  const resolvedTheme =
+    theme === "system"
+      ? typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light"
+      : theme
+
   const isDark = resolvedTheme === "dark"
   const isLight = resolvedTheme === "light"
   const isSystem = theme === "system"
 
   const toggleTheme = () => {
     if (theme === "light") {
-      setTheme("dark")
+      setThemeStore("dark")
     } else if (theme === "dark") {
-      setTheme("system")
+      setThemeStore("system")
     } else {
-      setTheme("light")
+      setThemeStore("light")
     }
   }
 
-  const setLightTheme = () => setTheme("light")
-  const setDarkTheme = () => setTheme("dark")
-  const setSystemTheme = () => setTheme("system")
+  const setLightTheme = () => setThemeStore("light")
+  const setDarkTheme = () => setThemeStore("dark")
+  const setSystemTheme = () => setThemeStore("system")
 
   return {
     theme,
-    setTheme,
+    setTheme: setThemeStore,
     resolvedTheme,
-    themes,
+    themes: ["light", "dark", "system"],
     mounted,
     isDark,
     isLight,
