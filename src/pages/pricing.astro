@@ -1,0 +1,135 @@
+---
+import Layout from '../layouts/Layout.astro'
+---
+
+<Layout title="Pricing - OpenFav">
+  <div id="pricing-container"></div>
+</Layout>
+
+<script>
+  import { Header } from '../react/components/layout/Header'
+  import { Footer } from '../react/components/layout/Footer'
+  import { Button } from '../react/components/ui/Button'
+  import { Card, CardContent } from '../react/components/ui/Card'
+  import { createRoot } from 'react-dom/client'
+  import { AppProviders } from '../react/providers/AppProviders'
+
+  function PricingPage() {
+    const plans = [
+      {
+        name: "Free",
+        price: "$0",
+        period: "forever",
+        description: "Perfect for personal use",
+        features: [
+          "Up to 100 resources",
+          "Basic organization",
+          "Mobile app access",
+          "Community support"
+        ],
+        popular: false
+      },
+      {
+        name: "Pro",
+        price: "$9",
+        period: "per month",
+        description: "For power users and small teams",
+        features: [
+          "Unlimited resources",
+          "Advanced search & filters",
+          "Team collaboration",
+          "Priority support",
+          "API access",
+          "Custom integrations"
+        ],
+        popular: true
+      },
+      {
+        name: "Enterprise",
+        price: "Custom",
+        period: "contact us",
+        description: "For large organizations",
+        features: [
+          "Everything in Pro",
+          "SSO integration",
+          "Advanced analytics",
+          "Custom branding",
+          "Dedicated support",
+          "SLA guarantee"
+        ],
+        popular: false
+      }
+    ]
+
+    return (
+      <AppProviders>
+        <div className="min-h-screen bg-background flex flex-col">
+          <Header />
+          
+          <main className="flex-1">
+            <section className="container mx-auto px-4 py-16">
+              <div className="text-center mb-16">
+                <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+                  Simple, Transparent Pricing
+                </h1>
+                <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                  Choose the plan that's right for you. Upgrade or downgrade at any time.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                {plans.map((plan, index) => (
+                  <Card key={index} className={`relative ${plan.popular ? 'border-primary shadow-lg' : ''}`}>
+                    {plan.popular && (
+                      <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                        <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
+                          Most Popular
+                        </span>
+                      </div>
+                    )}
+                    <CardContent className="p-6">
+                      <div className="text-center mb-6">
+                        <h3 className="text-2xl font-bold text-foreground mb-2">{plan.name}</h3>
+                        <div className="mb-2">
+                          <span className="text-4xl font-bold text-foreground">{plan.price}</span>
+                          <span className="text-muted-foreground ml-1">/{plan.period}</span>
+                        </div>
+                        <p className="text-muted-foreground">{plan.description}</p>
+                      </div>
+
+                      <ul className="space-y-3 mb-6">
+                        {plan.features.map((feature, featureIndex) => (
+                          <li key={featureIndex} className="flex items-center gap-3">
+                            <svg className="w-5 h-5 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span className="text-foreground">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <Button 
+                        variant={plan.popular ? "primary" : "outline"} 
+                        className="w-full"
+                      >
+                        {plan.name === "Enterprise" ? "Contact Sales" : "Get Started"}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </section>
+          </main>
+
+          <Footer />
+        </div>
+      </AppProviders>
+    )
+  }
+
+  const container = document.getElementById('pricing-container')
+  if (container) {
+    const root = createRoot(container)
+    root.render(<PricingPage />)
+  }
+</script>

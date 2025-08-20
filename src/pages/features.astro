@@ -1,0 +1,96 @@
+---
+import Layout from '../layouts/Layout.astro'
+---
+
+<Layout title="Features - OpenFav">
+  <div id="features-container"></div>
+</Layout>
+
+<script>
+  import { Header } from '../react/components/layout/Header'
+  import { Footer } from '../react/components/layout/Footer'
+  import { Card, CardContent } from '../react/components/ui/Card'
+  import { createRoot } from 'react-dom/client'
+  import { AppProviders } from '../react/providers/AppProviders'
+
+  function FeaturesPage() {
+    const features = [
+      {
+        title: "Smart Organization",
+        description: "Automatically categorize and tag your digital resources with AI-powered suggestions.",
+        icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+      },
+      {
+        title: "Universal Search",
+        description: "Find any resource instantly with our powerful search engine that understands context.",
+        icon: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+      },
+      {
+        title: "Team Collaboration",
+        description: "Share collections and collaborate with team members in real-time.",
+        icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+      },
+      {
+        title: "Cross-Platform Sync",
+        description: "Access your resources from any device with seamless synchronization.",
+        icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+      },
+      {
+        title: "Advanced Analytics",
+        description: "Get insights into your resource usage patterns and optimize your workflow.",
+        icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+      },
+      {
+        title: "API Integration",
+        description: "Connect with your favorite tools and services through our robust API.",
+        icon: "M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+      }
+    ]
+
+    return (
+      <AppProviders>
+        <div className="min-h-screen bg-background flex flex-col">
+          <Header />
+          
+          <main className="flex-1">
+            <section className="container mx-auto px-4 py-16">
+              <div className="text-center mb-16">
+                <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+                  Powerful Features for Modern Teams
+                </h1>
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                  Discover all the tools and capabilities that make OpenFav the perfect solution 
+                  for organizing your digital resources.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {features.map((feature, index) => (
+                  <Card key={index}>
+                    <CardContent className="p-6">
+                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                        <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={feature.icon}></path>
+                        </svg>
+                      </div>
+                      <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
+                      <p className="text-muted-foreground">{feature.description}</p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </section>
+          </main>
+
+          <Footer />
+        </div>
+      </AppProviders>
+    )
+  }
+
+  const container = document.getElementById('features-container')
+  if (container) {
+    const root = createRoot(container)
+    root.render(<FeaturesPage />)
+  }
+</script>

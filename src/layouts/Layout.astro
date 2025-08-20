@@ -1,0 +1,58 @@
+---
+import '../styles/globals.css';
+
+const { 
+  title = 'OpenFav V6 - Organize Your Digital Resources', 
+  description = 'A modern web application for organizing and managing your digital resources with theme customization and user authentication.'
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    
+    <!-- Preload critical fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Updated theme script to work with custom nanostores theme system -->
+    <script is:inline>
+      (function() {
+        const storageKey = 'theme';
+        const theme = localStorage.getItem(storageKey) || 'system';
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        const actualTheme = theme === 'system' ? systemTheme : theme;
+        
+        // Apply theme immediately to prevent flash
+        if (actualTheme === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+        
+        // Add transition class after initial load
+        document.addEventListener('DOMContentLoaded', () => {
+          document.body.classList.add('theme-transition');
+        });
+        
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+          if (localStorage.getItem(storageKey) === 'system') {
+            if (e.matches) {
+              document.documentElement.classList.add('dark');
+            } else {
+              document.documentElement.classList.remove('dark');
+            }
+          }
+        });
+      })();
+    </script>
+  </head>
+  <body class="min-h-full bg-background text-foreground antialiased">
+    <slot />
+  </body>
+</html>
