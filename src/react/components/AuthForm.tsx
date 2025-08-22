@@ -11,6 +11,7 @@ interface AuthFormProps {
 }
 
 export function AuthForm({ mode, onToggleMode, onSuccess }: AuthFormProps) {
+  console.log("[v0] AuthForm rendered with mode:", mode)
   const { signIn, signUp, signInWithGoogle } = useAuth()
   const [formData, setFormData] = useState({
     email: "",
@@ -22,6 +23,7 @@ export function AuthForm({ mode, onToggleMode, onSuccess }: AuthFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log("[v0] AuthForm handleSubmit started, mode:", mode, "email:", formData.email)
     setLoading(true)
     setError("")
 
@@ -31,12 +33,16 @@ export function AuthForm({ mode, onToggleMode, onSuccess }: AuthFormProps) {
           ? await signIn(formData.email, formData.password)
           : await signUp(formData.email, formData.password, formData.name)
 
+      console.log("[v0] AuthForm authentication result:", result)
       if (result.success) {
+        console.log("[v0] AuthForm authentication successful, calling onSuccess")
         onSuccess?.()
       } else {
+        console.log("[v0] AuthForm authentication failed:", result.error)
         setError(result.error || "Authentication failed")
       }
     } catch (err) {
+      console.log("[v0] AuthForm authentication error:", err)
       setError("An unexpected error occurred")
     } finally {
       setLoading(false)
@@ -44,17 +50,22 @@ export function AuthForm({ mode, onToggleMode, onSuccess }: AuthFormProps) {
   }
 
   const handleGoogleSignIn = async () => {
+    console.log("[v0] AuthForm Google sign-in started")
     setLoading(true)
     setError("")
 
     try {
       const result = await signInWithGoogle()
+      console.log("[v0] AuthForm Google sign-in result:", result)
       if (result.success) {
+        console.log("[v0] AuthForm Google sign-in successful")
         onSuccess?.()
       } else {
+        console.log("[v0] AuthForm Google sign-in failed:", result.error)
         setError(result.error || "Google sign in failed")
       }
     } catch (err) {
+      console.log("[v0] AuthForm Google sign-in error:", err)
       setError("Google sign in failed")
     } finally {
       setLoading(false)
@@ -162,7 +173,7 @@ export function AuthForm({ mode, onToggleMode, onSuccess }: AuthFormProps) {
               />
               <path
                 fill="currentColor"
-                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66 2.84.81-.62z"
               />
               <path
                 fill="currentColor"

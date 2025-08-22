@@ -11,7 +11,10 @@ interface ProtectedRouteProps {
 export function ProtectedRoute({ children, fallback }: ProtectedRouteProps) {
   const { user, loading } = useAuth()
 
+  console.log("[v0] ProtectedRoute - user:", user, "loading:", loading)
+
   if (loading) {
+    console.log("[v0] ProtectedRoute showing loading state")
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -20,6 +23,7 @@ export function ProtectedRoute({ children, fallback }: ProtectedRouteProps) {
   }
 
   if (!user) {
+    console.log("[v0] ProtectedRoute access denied - no user")
     return (
       fallback || (
         <div className="min-h-screen flex items-center justify-center">
@@ -32,5 +36,6 @@ export function ProtectedRoute({ children, fallback }: ProtectedRouteProps) {
     )
   }
 
+  console.log("[v0] ProtectedRoute access granted for user:", user.email)
   return <>{children}</>
 }

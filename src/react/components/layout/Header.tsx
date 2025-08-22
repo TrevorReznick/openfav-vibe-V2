@@ -14,6 +14,13 @@ export function Header({ showAuth = true }: HeaderProps) {
   const { user } = useAuth()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
+  console.log("[v0] Header rendered - user:", user, "showAuth:", showAuth, "mobileMenuOpen:", isMobileMenuOpen)
+
+  const toggleMobileMenu = () => {
+    console.log("[v0] Header toggling mobile menu from:", isMobileMenuOpen, "to:", !isMobileMenuOpen)
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
+
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -69,7 +76,7 @@ export function Header({ showAuth = true }: HeaderProps) {
 
             {/* Mobile Menu Button */}
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={toggleMobileMenu}
               className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

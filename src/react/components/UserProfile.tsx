@@ -7,12 +7,28 @@ export function UserProfile() {
   const { user, signOut } = useAuth()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
-  if (!user) return null
+  console.log("[v0] UserProfile rendered - user:", user, "dropdownOpen:", isDropdownOpen)
+
+  if (!user) {
+    console.log("[v0] UserProfile - no user, not rendering")
+    return null
+  }
+
+  const toggleDropdown = () => {
+    console.log("[v0] UserProfile toggling dropdown from:", isDropdownOpen, "to:", !isDropdownOpen)
+    setIsDropdownOpen(!isDropdownOpen)
+  }
+
+  const handleSignOut = () => {
+    console.log("[v0] UserProfile signing out user")
+    setIsDropdownOpen(false)
+    signOut()
+  }
 
   return (
     <div className="relative">
       <button
-        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        onClick={toggleDropdown}
         className="flex items-center gap-2 p-2 rounded-md hover:bg-accent transition-colors"
       >
         {user.avatar ? (
@@ -43,6 +59,7 @@ export function UserProfile() {
           <div className="py-1">
             <button
               onClick={() => {
+                console.log("[v0] UserProfile navigating to profile settings")
                 setIsDropdownOpen(false)
                 // Navigate to profile page
               }}
@@ -52,6 +69,7 @@ export function UserProfile() {
             </button>
             <button
               onClick={() => {
+                console.log("[v0] UserProfile navigating to preferences")
                 setIsDropdownOpen(false)
                 // Navigate to preferences
               }}
@@ -61,10 +79,7 @@ export function UserProfile() {
             </button>
             <hr className="my-1 border-border" />
             <button
-              onClick={() => {
-                setIsDropdownOpen(false)
-                signOut()
-              }}
+              onClick={handleSignOut}
               className="w-full text-left px-3 py-2 text-sm text-destructive hover:bg-destructive/10 transition-colors"
             >
               Sign Out
