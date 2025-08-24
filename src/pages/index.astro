@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro'
 import { HomePage } from '../react/pages/HomePage'
 ---
 
+<!-- Using client:only for better hydration control -->
 <Layout title="OpenFav V6 - Organize Your Digital Resources">
-  <HomePage client:load />
+  <HomePage client:only="react" />
 </Layout>
