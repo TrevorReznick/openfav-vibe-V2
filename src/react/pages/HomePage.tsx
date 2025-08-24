@@ -1,5 +1,3 @@
-"use client"
-
 import { SimpleHeader } from "../components/layout/SimpleHeader"
 import { Footer } from "../components/layout/Footer"
 import { Button } from "../components/ui/Button"
