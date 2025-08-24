@@ -7,7 +7,7 @@
       "@/react/components/*": ["./src/react/components/*"],
       "@/react/lib/*": ["./src/react/lib/*"],
       "@/react/hooks/*": ["./src/react/hooks/*"],
-      "@/lib/*": ["./src/lib/*"]
+      "@/lib/*": ["./src/react/lib/*"]
     }
   }
 }
